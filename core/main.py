@@ -26,20 +26,20 @@ class Main():
         self.running = True
        
     
-    def render_triangle(self):
-        triangle = Triangle()
-        self.program = OpenGLUtilities.create_program(triangle.vertexShaderID, triangle.fragmentShaderID)
-        return triangle
+    def create_program(self, mesh):
+        self.program = OpenGLUtilities.create_program(mesh.vertexShaderID, mesh.fragmentShaderID)
     
-    def update(self,triangle):
+    
+        
+    def draw_mesh(self,mesh):
         glUseProgram(self.program)
-        glBindVertexArray(triangle.vertexArrayID)
+        glBindVertexArray(mesh.vertexArrayID)
         glDrawArrays(GL_TRIANGLES, 0 , 3)
         
         
         
     def start(self):
-        triangle =  self.render_triangle()
+        mesh =  self.create_program(Triangle())
         while self.running:
             for event in pg.event.get():
                 if event.type == QUIT:
@@ -48,7 +48,7 @@ class Main():
                     if event.key == K_ESCAPE:
                         self.running = False
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            self.update(triangle)
+            self.draw_mesh(mesh)
             pg.display.flip()
             self.clock.tick(60)
             
