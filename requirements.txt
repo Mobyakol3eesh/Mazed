@@ -1,4 +1,11 @@
-numpy==2.2.4
+certifi==2023.11.17
+charset-normalizer==3.3.2
+cowsay==6.1
+idna==3.6
+numpy==2.2.3
 pygame==2.6.1
 PyOpenGL==3.1.9
 PyOpenGL-accelerate==3.1.9
+requests==2.31.0
+setuptools==78.1.0
+urllib3==2.1.0
