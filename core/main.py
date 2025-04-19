@@ -1,9 +1,3 @@
-import sys
-import os
-
-# Check the resolved pat
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import pygame as pg
 from opengl_utilities import OpenGLUtilities
 from mesh.triangle import Triangle
@@ -20,26 +14,25 @@ class Main():
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
-        self.program = None
         self.screen = pg.display.set_mode((width, height), DOUBLEBUF | OPENGL)
         self.clock = pg.time.Clock() 
         self.running = True
        
     
-    def create_program(self, mesh):
-        self.program = OpenGLUtilities.create_program(mesh.vertexShaderID, mesh.fragmentShaderID)
+   
+        
     
     
         
     def draw_mesh(self,mesh):
-        glUseProgram(self.program)
-        glBindVertexArray(mesh.vertexArrayID)
-        glDrawArrays(GL_TRIANGLES, 0 , 3)
+        glUseProgram(mesh.program)
+        glBindVertexArray(mesh.glBuffer.vertexArrayID)
+        glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_INT, None)
         
         
         
     def start(self):
-        mesh =  self.create_program(Triangle())
+        mesh = Triangle()
         while self.running:
             for event in pg.event.get():
                 if event.type == QUIT:

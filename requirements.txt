@@ -9,3 +9,4 @@ PyOpenGL-accelerate==3.1.9
 requests==2.31.0
 setuptools==78.1.0
 urllib3==2.1.0
+-e .
