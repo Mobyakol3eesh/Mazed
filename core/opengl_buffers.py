@@ -10,23 +10,7 @@ class openGLBuffer:
         self.stride = stride
         
         
-    def createVertexBuffRGB(self,vertecies,vertexAttrIndex):
-       
-        vertecies = np.array(vertecies).astype(np.float32)
-        
-        self.vertexBufferID = glGenBuffers(1)
-        
-        glBindVertexArray(self.vertexArrayID)
-        glBindBuffer(GL_ARRAY_BUFFER, self.vertexBufferID)
-        glBufferData(GL_ARRAY_BUFFER, vertecies.nbytes, vertecies.ravel(), GL_STATIC_DRAW)
-        glVertexAttribPointer(vertexAttrIndex, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), None)
-        glEnableVertexAttribArray(vertexAttrIndex)
-        
-        glVertexAttribPointer(vertexAttrIndex + 1, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(self.vectorSize * sizeof(c_float)))
-        glEnableVertexAttribArray(vertexAttrIndex + 1)
-        
-        glBindVertexArray(0)
-        
+  
     def createVertexBuff(self,vertecies,vertexAttrIndex):
        
         vertecies = np.array(vertecies).astype(np.float32)
@@ -36,9 +20,17 @@ class openGLBuffer:
         glBindVertexArray(self.vertexArrayID)
         glBindBuffer(GL_ARRAY_BUFFER, self.vertexBufferID)
         glBufferData(GL_ARRAY_BUFFER, vertecies.nbytes, vertecies.ravel(), GL_STATIC_DRAW)
-        glVertexAttribPointer(vertexAttrIndex, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), None)
-        glEnableVertexAttribArray(vertexAttrIndex)
-        
+        if self.stride >= 3:
+            glVertexAttribPointer(vertexAttrIndex, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), None)
+            glEnableVertexAttribArray(vertexAttrIndex)
+        if self.stride >= 6:
+           
+            glVertexAttribPointer(vertexAttrIndex + 1, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(self.vectorSize * sizeof(c_float)))
+            glEnableVertexAttribArray(vertexAttrIndex + 1)
+        elif self.stride == 8:
+             
+            glVertexAttribPointer(vertexAttrIndex + 2, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(2 * self.vectorSize * sizeof(c_float)))
+            glEnableVertexAttribArray(vertexAttrIndex + 2)
         
         glBindVertexArray(0)    
         

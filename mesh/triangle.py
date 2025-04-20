@@ -4,12 +4,12 @@ from core.opengl_utilities import OpenGLUtilities
 from mesh.shader import Shader
 
 vertices = [
-    -0.5,  -0.5, 0.0,  0.0, 1, 0.0,
+    [-0.5,  -0.5, 0.0,   0.0, 1, 0.0],
      
-    0.0, 0.5, 0.0,      1,0.0, 0.0,
+    [0.0, 0.5, 0.0,      1,0.0, 0.0],
     
     
-    0.5, -0.5, 0.0,      0.0, 0.0, 1.0,
+    [0.5, -0.5, 0.0,      0.0, 0.0, 1.0]
     
    
         ]
@@ -21,15 +21,15 @@ indices = [
 
 
 class Triangle():
-    def __init__(self, vertexShaderPath=r'\shader\triangle_shaderv.glsl', fragmentShaderPath=r"\shader\triangle_shaderf.glsl", vertices=vertices, indices=indices):
+    def __init__(self, shaderName='triangle_shader', vertices=vertices, indices=indices,rgb=True):
         self.vertices = vertices
         self.indices = indices
-        self.shader = Shader(vertexShaderPath,fragmentShaderPath)
+        self.shader = Shader(shaderName)
         
         
         
-        self.glBuffer = openGLBuffer(vectorSize=3,stride=6)
-        self.glBuffer.createVertexBuffRGB(self.vertices,vertexAttrIndex=0)
+        self.glBuffer = openGLBuffer(vectorSize=3,stride=self.vertices[0].__len__())
+        self.glBuffer.createVertexBuff(self.vertices,vertexAttrIndex=0)
         self.glBuffer.createIndexBuffer(self.indices,vertexAttrIndex=0)
     
         

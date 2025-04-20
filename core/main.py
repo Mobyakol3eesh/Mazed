@@ -27,6 +27,7 @@ class Main():
         
     def draw_mesh(self,mesh):
         mesh.shader.use()
+        mesh.shader.use_uniform("offset", (0.2, 0.2, 0.0), 'vec3')
         glBindVertexArray(mesh.glBuffer.vertexArrayID)
         glDrawElements(GL_TRIANGLES, len(mesh.indices), GL_UNSIGNED_INT, None)
         glBindVertexArray(0)
