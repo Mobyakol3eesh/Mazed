@@ -20,8 +20,6 @@ class Transform(Component):
     def scale(self, x, y, z):
         
         self.transformMat = glm.scale(self.transformMat, glm.vec3(x, y, z))
-        matrix44 = Matrix44.from_quaternion(self.orientation)
-        self.transformMat = glm.mat4(matrix44) * self.transformMat
         self.applyTransform()
         
     def rotateQX(self, angle):
