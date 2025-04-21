@@ -28,7 +28,8 @@ class Mazed():
     
         
     def draw_mesh(self,mesh):
-        
+        timems = self.time.get_ticks() / 1000.0
+        mesh.transform.rotateQ(0,0,1 * sin(timems) * 0.5)
         glBindVertexArray(mesh.glBuffer.vertexArrayID)
         glDrawElements(GL_TRIANGLES, len(mesh.indices), GL_UNSIGNED_INT, None)
         glBindVertexArray(0)
@@ -38,9 +39,8 @@ class Mazed():
         mesh = Triangle(textures=['wall.jpg'])
         mesh.AddTexture('awesomeface.png')
         mesh.transform.translate(0.2, 0.0, 0.0)
-        mesh.transform.rotateQ(70,0,0)
-        mesh.transform.rotateQ(0,54,0)
-        # mesh.transform.rotateQ(10,0,0)
+        mesh.transform.rotateQ(80,0,0) 
+       
         
        
        

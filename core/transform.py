@@ -22,14 +22,20 @@ class Transform(Component):
         self.transformMat = glm.scale(self.transformMat, glm.vec3(x, y, z))
         self.applyTransform()
         
-    def rotateQ(self, angleX,angleY, angleZ):
+    def rotateQLocal(self, angleX,angleY, angleZ):
         q = Quaternion.from_eulers(glm.vec3(glm.radians(angleX), glm.radians(angleY), glm.radians(angleZ)))
-        self.orientation *= q
+        self.orientation = self.orientation * q
         matrix44 = Matrix44.from_quaternion(self.orientation)
         self.transformMat = glm.mat4(matrix44) 
         self.applyTransform()
-
-  
+        
+    def rotateQGlobal(self, angleX,angleY, angleZ):
+        q = Quaternion.from_eulers(glm.vec3(glm.radians(angleX), glm.radians(angleY), glm.radians(angleZ)))
+        self.orientation = q * self.orientation
+        matrix44 = Matrix44.from_quaternion(self.orientation)
+        self.transformMat = glm.mat4(matrix44) 
+        self.applyTransform()
+    
     def applyTransform(self):
         self.shader.use_uniform("transform",self.transformMat, 'mat4')
         
