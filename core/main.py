@@ -15,6 +15,7 @@ class Main():
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         self.screen = pg.display.set_mode((width, height), DOUBLEBUF | OPENGL)
+        glViewport(0, 0, width, height)
         self.clock = pg.time.Clock() 
         self.time = pg.time
         self.running = True
@@ -27,13 +28,11 @@ class Main():
         
     def draw_mesh(self,mesh):
         mesh.shader.use()
-        mesh.shader.use_uniform("offset", (0.2, 0.2, 0.0), 'vec3')
         glBindVertexArray(mesh.glBuffer.vertexArrayID)
         glDrawElements(GL_TRIANGLES, len(mesh.indices), GL_UNSIGNED_INT, None)
         glBindVertexArray(0)
         
-        
-        
+   
     def start(self):
         mesh = Triangle()
        

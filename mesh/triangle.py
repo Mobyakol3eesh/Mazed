@@ -21,16 +21,16 @@ indices = [
 
 
 class Triangle():
-    def __init__(self, shaderName='triangle_shader', vertices=vertices, indices=indices,rgb=True):
+    def __init__(self, shaderName='triangle_shader',vertices=vertices, indices=indices, texture=None):
         self.vertices = vertices
         self.indices = indices
         self.shader = Shader(shaderName)
-        
+        self.texture = texture
         
         
         self.glBuffer = openGLBuffer(vectorSize=3,stride=self.vertices[0].__len__())
         self.glBuffer.createVertexBuff(self.vertices,vertexAttrIndex=0)
-        self.glBuffer.createIndexBuffer(self.indices,vertexAttrIndex=0)
+        self.glBuffer.createIndexBuffer(self.indices)
     
         
         

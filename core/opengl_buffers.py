@@ -35,14 +35,13 @@ class openGLBuffer:
         glBindVertexArray(0)    
         
     
-    def createIndexBuffer(self,indices,vertexAttrIndex):
+    def createIndexBuffer(self,indices):
         
         self.indexBufferID = glGenBuffers(1)
         glBindVertexArray(self.vertexArrayID)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.indexBufferID)
         indices = np.array(indices).astype(np.uint32)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.nbytes, indices.ravel(), GL_STATIC_DRAW)
-        glVertexAttribPointer(vertexAttrIndex, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), None)
         glBindVertexArray(0)
         
         

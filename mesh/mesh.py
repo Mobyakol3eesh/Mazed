@@ -6,6 +6,6 @@ from core.opengl_buffers import openGLBuffer
 
 
 class Mesh(Triangle):
-    def __init__(self,vertices,indices,vertexShaderPath,fragmentShaderPath):
-        super().__init__(vertices, indices, vertexShaderPath, fragmentShaderPath)
+    def __init__(self,ShaderName,vertices,indices,texture):
+        super().__init__(vertices, indices, texture)
         
