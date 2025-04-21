@@ -37,9 +37,9 @@ class Mazed():
     def start(self):
         mesh = Triangle(textures=['wall.jpg'])
         mesh.AddTexture('awesomeface.png')
-        mesh.transfrom.translate(0.0, 0.0, 0.0)
-        mesh.transfrom.scale(0.5, 0.5, 1)
-        mesh.transfrom.quaternionRotate('y', radians(50.0))
+        mesh.transform.translate(0.2, 0.0, 0.0)
+        mesh.transform.rotateQX(30)
+        mesh.transform.rotateQY(54)
        
         while self.running:
             for event in pg.event.get():

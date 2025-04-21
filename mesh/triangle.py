@@ -23,7 +23,7 @@ class Triangle():
         
         
         self.shader = Shader(shaderName)
-        self.transfrom =Transform(self.shader)
+        self.transform =Transform(self.shader)
         self.textures = []
         
         if textures:
