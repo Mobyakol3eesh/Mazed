@@ -1,5 +1,5 @@
-import numpy as np
-from numpy import *
+
+
 from pyrr import Quaternion, Matrix44
 from core.component import Component
 import glm
