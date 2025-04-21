@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from core.opengl_utilities import OpenGLUtilities
 import os 
+from glm import *
 class Shader:
     def __init__(self, ShaderName=None):
         self.vertex_shader_source =  None
@@ -44,6 +45,8 @@ class Shader:
             glUniform3f(location, *value)
         elif valueType == 'vec4':
             glUniform4f(location, *value)
+        elif valueType == 'mat4':
+            glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(value))
         
     def use(self):
         glUseProgram(self.programID)

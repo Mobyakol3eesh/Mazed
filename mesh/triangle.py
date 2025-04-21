@@ -3,6 +3,7 @@ from core.opengl_buffers import openGLBuffer
 from core.opengl_utilities import OpenGLUtilities
 from mesh.shader import Shader
 from mesh.texture import Texture
+from core.transform import Transform
 vertices =  [
     [ 0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 1.0,  ] ,
     [ 0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 0.0,  ] ,
@@ -19,7 +20,10 @@ class Triangle():
     def __init__(self, shaderName='triangle_shader',vertices=vertices, indices=indices, textures=['wall.jpg']):
         self.vertices = vertices
         self.indices = indices
+        
+        
         self.shader = Shader(shaderName)
+        self.transfrom =Transform(self.shader)
         self.textures = []
         
         if textures:
@@ -34,15 +38,21 @@ class Triangle():
 
     def textureActivation(self):
         for i in range(len(self.textures)):
+            if i == 16:
+                raise Exception("Max 16 textures supported")                        
             glActiveTexture(GL_TEXTURE0 + i)
             glBindTexture(GL_TEXTURE_2D, self.textures[i].textureID)
             self.shader.use_uniform(f"texture{i}", i, 'int')
         
+    
     def AddTexture(self,textureName):
         self.textures.append(Texture(textureName))
         if  self.textures.__len__() > 1:
             self.textureActivation()
             
+        
+    
+               
             
         
 
