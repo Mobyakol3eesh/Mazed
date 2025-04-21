@@ -16,18 +16,34 @@ indices = [
 
 
 class Triangle():
-    def __init__(self, shaderName='triangle_shader',vertices=vertices, indices=indices, texture='wall.jpg'):
+    def __init__(self, shaderName='triangle_shader',vertices=vertices, indices=indices, textures=['wall.jpg']):
         self.vertices = vertices
         self.indices = indices
         self.shader = Shader(shaderName)
-        self.texture : list[Texture]  = [Texture(texture)] 
+        self.textures = []
         
+        if textures:
+            self.textures = [Texture(texture) for texture in textures] 
+        
+        if self.textures.__len__() > 1:
+            self.textureActivation()
         
         self.glBuffer = openGLBuffer(vectorSize=3,stride=self.vertices[0].__len__())
         self.glBuffer.createVertexBuff(self.vertices,vertexAttrIndex=0)
         self.glBuffer.createIndexBuffer(self.indices)
-    
+
+    def textureActivation(self):
+        for i in range(len(self.textures)):
+            glActiveTexture(GL_TEXTURE0 + i)
+            glBindTexture(GL_TEXTURE_2D, self.textures[i].textureID)
+            self.shader.use_uniform(f"texture{i}", i, 'int')
         
+    def AddTexture(self,textureName):
+        self.textures.append(Texture(textureName))
+        if  self.textures.__len__() > 1:
+            self.textureActivation()
+            
+            
         
 
         

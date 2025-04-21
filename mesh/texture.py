@@ -6,6 +6,10 @@ from PIL import Image
 
 
 class Texture():
+    def __ininit__(self):
+        self.textureID = None
+        
+    
     def __init__(self, imageName):
         self.textureID = glGenTextures(1)
         glBindTexture(GL_TEXTURE_2D, self.textureID)
@@ -16,7 +20,8 @@ class Texture():
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data)
         glGenerateMipmap(GL_TEXTURE_2D)
-       
+        
+        del image_data
         
         
         

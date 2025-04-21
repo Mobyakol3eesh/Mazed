@@ -8,13 +8,14 @@ from math import *
 
 
 
-class Main():
+class Mazed():
     def __init__(self, width=800, height=600):
         pg.init()
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         self.screen = pg.display.set_mode((width, height), DOUBLEBUF | OPENGL)
+        self.objects = []
         glViewport(0, 0, width, height)
         self.clock = pg.time.Clock() 
         self.time = pg.time
@@ -27,14 +28,14 @@ class Main():
     
         
     def draw_mesh(self,mesh):
-        mesh.shader.use()
+        
         glBindVertexArray(mesh.glBuffer.vertexArrayID)
         glDrawElements(GL_TRIANGLES, len(mesh.indices), GL_UNSIGNED_INT, None)
         glBindVertexArray(0)
         
    
     def start(self):
-        mesh = Triangle()
+        mesh = Triangle(textures=['wall.jpg','awesomeface.png'])
        
         while self.running:
             for event in pg.event.get():
@@ -55,5 +56,5 @@ class Main():
 
 
 if __name__ == "__main__":
-    Main().start()
+    Mazed().start()
     

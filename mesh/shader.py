@@ -9,6 +9,7 @@ class Shader:
         self.vertexShaderID = OpenGLUtilities.createShader(GL_VERTEX_SHADER, self.vertex_shader_source)
         self.fragmentShaderID = OpenGLUtilities.createShader(GL_FRAGMENT_SHADER, self.fragment_shader_source)
         self.programID = OpenGLUtilities.create_program(self.vertexShaderID, self.fragmentShaderID)
+        self.use()
         
 
     def __load(self, ShaderName=None):
@@ -30,6 +31,7 @@ class Shader:
             raise Exception("Shader program not created. Call __init__() first.")
         
         location = glGetUniformLocation(self.programID, vertexAttrName)
+       
         if location == -1:
             raise Exception(f"Uniform '{vertexAttrName}' not found in shader program.")
         if valueType == 'float':
@@ -45,3 +47,6 @@ class Shader:
         
     def use(self):
         glUseProgram(self.programID)
+        
+    def deactivate(self):
+        glUseProgram(0)  
