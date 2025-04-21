@@ -38,6 +38,9 @@ class Mazed():
         mesh = Triangle(textures=['wall.jpg'])
         mesh.AddTexture('awesomeface.png')
         mesh.transform.translate(0.2, 0.0, 0.0)
+        mesh.transform.rotateQ(70,0,0)
+        mesh.transform.rotateQ(0,54,0)
+        # mesh.transform.rotateQ(10,0,0)
         
        
        
