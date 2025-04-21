@@ -17,7 +17,7 @@ class OpenGLUtilities:
         if not isSucced:
             infoLog = glGetShaderInfoLog(shaderID).decode('utf-8')
             glDeleteShader(shaderID)
-            raise RuntimeError(f"Shader compilation failed: {infoLog}")
+            raise RuntimeError(f"Shader compilation failed: at {shaderType} {infoLog}")
         return shaderID
     @staticmethod
     def create_program(vertexshaderID, fragmentShaderID):

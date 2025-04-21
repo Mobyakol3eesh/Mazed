@@ -2,8 +2,10 @@ from OpenGL.GL import *
 import numpy as np
 from ctypes import sizeof, c_float,c_void_p
 class openGLBuffer:
-    def __init__(self,vectorSize,stride):
+    def __init__(self,vectorSize,stride,rgbCoord=3,texCoord=2):
         self.vertexArrayID = glGenVertexArrays(1)
+        self.rgbCoord = rgbCoord
+        self.texCoord = texCoord
         self.vectorSize = vectorSize
         self.vertexBufferID = None
         self.indexBufferID = None
@@ -25,11 +27,11 @@ class openGLBuffer:
             glEnableVertexAttribArray(vertexAttrIndex)
         if self.stride >= 6:
            
-            glVertexAttribPointer(vertexAttrIndex + 1, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(self.vectorSize * sizeof(c_float)))
+            glVertexAttribPointer(vertexAttrIndex + 1, self.rgbCoord, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(self.vectorSize * sizeof(c_float)))
             glEnableVertexAttribArray(vertexAttrIndex + 1)
-        elif self.stride == 8:
+        if self.stride == 8:
              
-            glVertexAttribPointer(vertexAttrIndex + 2, self.vectorSize, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p(2 * self.vectorSize * sizeof(c_float)))
+            glVertexAttribPointer(vertexAttrIndex + 2, self.texCoord, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p((self.vectorSize + self.rgbCoord) * sizeof(c_float)))
             glEnableVertexAttribArray(vertexAttrIndex + 2)
         
         glBindVertexArray(0)    
