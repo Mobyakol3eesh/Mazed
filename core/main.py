@@ -29,7 +29,10 @@ class Mazed():
         
     def draw_mesh(self,mesh):
         timems = self.time.get_ticks() / 1000.0
-        mesh.transform.rotateQ(0,0,1 * sin(timems) * 0.5)
+        # mesh.transform.rotateQGlobal(0,0,1 * sin(timems) * 0.5)
+        # mesh.transform.rotateQ(0,0,sin(timems))
+        # mesh.transform.rotateQ(0,0,sin(timems))
+        mesh.transform.rotateQ(0,cos(timems),0,False)
         glBindVertexArray(mesh.glBuffer.vertexArrayID)
         glDrawElements(GL_TRIANGLES, len(mesh.indices), GL_UNSIGNED_INT, None)
         glBindVertexArray(0)
