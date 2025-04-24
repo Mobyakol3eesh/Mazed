@@ -1,15 +1,16 @@
-
+from core.transform import Transform
 
 
 class GameObject(object):
-    def __init__(self, name):
+    def __init__(self, name , position=(0,0,0)):
         self.name = name
-        self.glBuffer = None
-        self.shader = None
-        self.textures = []
-        self.modelMatrix = None
-        self.viewMatrix = None
-        self.projectionMatrix = None
-        self.transformMatrix = None
+        self.components = {}
+        self.addComponent(Transform(*position))
         
         
+    def addComponent(self, component):
+        self.components[type(component)] = component
+    
+    
+    def getComponent(self, componentClass):
+       return self.components.get(componentClass, None)

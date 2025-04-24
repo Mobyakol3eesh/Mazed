@@ -5,24 +5,40 @@ from core.component import Component
 import glm
 
 class Transform(Component):
-    def __init__(self,shader):
+    def __init__(self,x=0,y=0,z=0):
         super().__init__(name="Transform")
-        self.transformMat = glm.mat4(1.0)
-        self.shader = shader
-        self.orientation = Quaternion()
-        self.position = glm.vec3(0, 0, 0)
-        self.scaleVec = glm.vec3(1, 1, 1)
         
+        self.modelMat = glm.mat4(1.0)
+        self.orientation = Quaternion()
+        
+        self.position = glm.vec3(x, y, z)
+        
+        
+        self.translationMat = glm.mat4(1.0)
+        self.scaleMat = glm.mat4(1.0)
+        
+        self.setPosition(x,y,z)
+    
+    def setPosition(self, position):
+        self.position = glm.vec3(*position)
+        self.translationMat = glm.translate(glm.mat4(1.0), self.position)
+        self.applyTransform()
+        
+    def setPosition(self, x,y,z):
+        self.position = glm.vec3(x, y, z)
+        self.translationMat = glm.translate(glm.mat4(1.0), self.position)
+        self.applyTransform()
     
     def translate(self,x , y, z):
         
-       self.position += glm.vec3(x, y, z)
+       
+       self.translationMat = glm.translate(self.translationMat,glm.vec3(x,y,z))
        self.applyTransform()
         
         
     def scale(self, x, y, z):
         
-        self.scaleVec = glm.vec3(x, y, z)
+        self.scaleMat = glm.scale(glm.mat4(1.0),glm.vec3(x,y,z))
         self.applyTransform()
         
     def rotateQ(self, angleX,angleY, angleZ,local=True):
@@ -38,8 +54,10 @@ class Transform(Component):
     def applyTransform(self):
         rotationMat = Matrix44.from_quaternion(self.orientation)
         rotationMat = glm.mat4(rotationMat)
-        self.transformMat = glm.translate(glm.mat4(1.0),self.position) * (rotationMat * glm.scale(glm.mat4(1.0),self.scaleVec))
+        
+        self.modelMat = self.translationMat * (rotationMat * self.scaleMat)
         
         
-        self.shader.use_uniform("transform",self.transformMat, 'mat4')
+    def getModelMatrix(self):
+        return self.modelMat
         

@@ -26,7 +26,7 @@ class Shader:
         with open(fragmentShaderPath, 'r') as file:
             self.fragment_shader_source = file.read()
             
-    def use_uniform(self, vertexAttrName, value, valueType):
+    def useUniform(self, vertexAttrName, value, valueType):
         
         if not self.programID:
             raise Exception("Shader program not created. Call __init__() first.")
@@ -38,6 +38,8 @@ class Shader:
         if valueType == 'float':
             glUniform1f(location, value)
         elif valueType == 'int':
+            glUniform1i(location, value)
+        elif valueType == 'bool':
             glUniform1i(location, value)
         elif valueType == 'vec2':
             glUniform2f(location, *value)

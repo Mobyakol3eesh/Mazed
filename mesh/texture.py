@@ -12,9 +12,11 @@ class Texture():
     
     def __init__(self, imageName):
         self.textureID = glGenTextures(1)
+        
         glBindTexture(GL_TEXTURE_2D, self.textureID)
         self.initialize()
         image_data , width, height = self.__load(imageName)
+        
         if (image_data is None):
             raise Exception(f"Failed to load texture: {imageName}")
         
