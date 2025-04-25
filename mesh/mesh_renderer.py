@@ -8,23 +8,33 @@ from core.component import Component
 from core.transform import Transform
 
 class MeshRenderer(Component):
-    def __init__(self,meshFilter : MeshFilter, material : Material):
-        self.meshFilter = meshFilter
+    def __init__(self, material : Material):
+        super().__init__(name="MeshRenderer")
+        self.gameObject = None
+        self.meshFilter = None
         self.material = material
         
         self.glBuffer = None
         self.vbo = None
         self.ibo = None
         self.vao = None
+        
+    
+    def start(self):
+        
+        self.meshFilter = self.gameObject.getComponent(MeshFilter)
         self.data , self.indices = self.meshFilter.concatData()
         self.glBuffer = openGLBuffer(vectorSize=3, stride=self.meshFilter.mesh.vertices[0].__len__())
-        self.vbo = self.glBuffer.createVertexBuff(self.data, vertexAttrIndex=0, isTextured=self.material.isTextured)
+        self.glBuffer.createVertexBuff(self.data, vertexAttrIndex=0, isTextured=self.material.isTextured)
+        self.vbo = self.glBuffer.vertexBufferID
+        self.glBuffer.createIndexBuffer(self.indices)
+        self.ibo = self.glBuffer.indexBufferID
         self.vao = self.glBuffer.getVertexArrayID()
-        self.ibo = self.glBuffer.createIndexBuffer(self.indices)
-    
-    
+        
+        
     
     def render(self,transform: Transform, projectionMatrix, viewMatrix):
+        self.material.shader.use()
         
         if (self.material.color is not None):
             
@@ -39,8 +49,20 @@ class MeshRenderer(Component):
         self.material.shader.useUniform("model", transform.getModelMatrix(), 'mat4')
         self.material.shader.useUniform("projection", projectionMatrix, 'mat4')
         self.material.shader.useUniform("view", viewMatrix, 'mat4')
+
+        glBindVertexArray(self.vao)
+        glDrawElements(GL_TRIANGLES, len(self.meshFilter.mesh.indices), GL_UNSIGNED_INT, None)
+        glBindVertexArray(0)
+    
         
+    def addTexture(self, textureName):
+        self.material.addTexture(textureName)
+        glDeleteBuffers(1, [self.vbo])
         
+        self.glBuffer.createVertexBuff(self.data, vertexAttrIndex=0, isTextured=self.material.isTextured)
+        self.vbo = self.glBuffer.vertexBufferID
+        
+        self.glBuffer.createIndexBuffer(self.indices)
         
         
         

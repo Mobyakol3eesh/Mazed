@@ -12,14 +12,19 @@ class Material:
         self.texturesID = []
         self.shaderName = shaderName 
         self.isTextured = False
-        self.activateMaterial()
-        print(self.isTextured)
-    def activateMaterial(self):
-        self.shader = Shader(self.shaderName)
         
-        if (len(self.textures) >= 1 or self.textures is not None):
+        self.shader = Shader(self.shaderName)
+        self.activateMaterial()
+        
+        print(self.isTextured)
+        
+        
+    def activateMaterial(self):
+        
+        
+        if (self.textures):
             
-            print("Textures are assigned")
+            
             self.isTextured = True
             self.textures = [Texture(texture) for texture in self.textures]
             self.texturesID = [texture.textureID for texture in self.textures]
@@ -35,7 +40,7 @@ class Material:
         for i in range(len(self.textures)):
             if i == 16:
                  raise Exception("Max 16 textures supported")   
-            self.shader.use()
+            
             self.shader.useUniform(f"texture{i}", i, 'int')                     
             glActiveTexture(GL_TEXTURE0 + i)
             glBindTexture(GL_TEXTURE_2D, self.texturesID[i])
@@ -47,6 +52,10 @@ class Material:
     def addTexture(self,textureName):
          self.textures.append(Texture(textureName))
          self.texturesID.append(self.textures[-1].textureID)
+         self.isTextured = True
+         
          if  self.textures.__len__() > 1:
-            # self.textureActivation()  
-            pass
+            self.textureActivation()  
+            
+            
+            
