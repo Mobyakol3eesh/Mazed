@@ -41,6 +41,7 @@ class Mazed():
     
         
     def drawScene(self,dt):
+        
         self.activeScene.render(self.projection, self.view)
         self.activeScene.update(dt)
         
@@ -52,10 +53,8 @@ class Mazed():
    
     def start(self):
         self.activeScene = Scene()
-        cubeMesh = MeshFilter(Mesh("cube",cubeVertices,cubeIndices,cubeTexCoord,None))
-        cube = self.activeScene.createGameObject("Cube",cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="cube_shader")))
+        cube = self.createCube((0,0,0))
         cube.addComponent(RotationScript("RotationScript",))
-        
        
         while self.running:
             
@@ -77,7 +76,12 @@ class Mazed():
         
     def setScene(self, scene):
         self.activeScene = scene
-
+        
+    def createCube(self,position=(0,0,0)):
+        cubeMesh = MeshFilter(Mesh("cube",cubeVertices,cubeIndices,cubeTexCoord,None))
+        cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="cube_shader")))
+        return cube
+        
 
 if __name__ == "__main__":
     Mazed().start()

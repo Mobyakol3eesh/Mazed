@@ -9,6 +9,9 @@ class Component:
 
     
     
+    def setGameObject(self, gameObject):
+        self.gameObject = gameObject
+    
     
     def enable(self):
         self.Enabled = True

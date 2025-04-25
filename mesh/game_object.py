@@ -12,7 +12,10 @@ class GameObject(object):
     def addComponent(self, component):
         
         self.components[type(component)] = component
-        component.gameObject = self
+       
+        
+        if hasattr(component, 'setGameObject'):
+            component.setGameObject(self)
         
         if hasattr(component, 'start'):
             component.start()
@@ -27,7 +30,7 @@ class GameObject(object):
         for component in self.components.values():
             if hasattr(component, 'update'):
                 component.update(deltaTime)
-    
+
     def render(self, projectionMatrix, viewMatrix):
         renderer = self.getComponent(MeshRenderer)
         if renderer:

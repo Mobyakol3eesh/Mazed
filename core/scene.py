@@ -13,9 +13,9 @@ class Scene:
         self.gameObjects.append(gameObject)
     def removeGameObject(self, gameObject):
         self.gameObjects.remove(gameObject)
-    def createGameObject(self, gameObjectName,*components):
+    def createGameObject(self, gameObjectName,position=(0,0,0),*components):
         
-        gameObject = GameObject(gameObjectName,(0,0,0),*components)
+        gameObject = GameObject(gameObjectName,position,*components)
         self.addGameObject(gameObject)
         return gameObject
     

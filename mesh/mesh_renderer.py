@@ -21,7 +21,7 @@ class MeshRenderer(Component):
         
     
     def start(self):
-        
+    
         self.meshFilter = self.gameObject.getComponent(MeshFilter)
         self.data , self.indices = self.meshFilter.concatData()
         self.glBuffer = openGLBuffer(vectorSize=3, stride=self.meshFilter.mesh.vertices[0].__len__())
