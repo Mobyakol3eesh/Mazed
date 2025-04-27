@@ -1,6 +1,9 @@
--e .
+-e git+https://github.com/Mobyakol3eesh/Mazed.git@c1774bf9046cea0ec19ba1b07595feb4751ed558#egg=Mazed
+multipledispatch==1.0.0
 numpy==2.2.4
 pillow==11.2.1
 pygame==2.6.1
+pyglm==2.8.2
 PyOpenGL==3.1.9
 PyOpenGL-accelerate==3.1.9
+pyrr==0.10.3
