@@ -1,4 +1,4 @@
--e git+https://github.com/Mobyakol3eesh/Mazed.git@c1774bf9046cea0ec19ba1b07595feb4751ed558#egg=Mazed
+-e .
 multipledispatch==1.0.0
 numpy==2.2.4
 pillow==11.2.1

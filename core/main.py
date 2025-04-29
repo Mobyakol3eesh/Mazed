@@ -8,32 +8,31 @@ from mesh.game_object import GameObject
 from OpenGL.GL import *
 from math import *
 import glm
+from core.camera import Camera
 from mesh.cube import *
 from mesh.mesh import Mesh
 from mesh.rotation_script import RotationScript 
+from MazedGame.Scripts.rotate_camera import RotateCamera
 
 class Mazed():
     def __init__(self, width=800, height=600):
         pg.init()
+        self.width = width
+        self.height = height
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
-        self.screen = pg.display.set_mode((width, height), DOUBLEBUF | OPENGL)
+        self.screen = pg.display.set_mode((self.width, self.height), DOUBLEBUF | OPENGL)
         self.objects = []
         self.fps = 60
-        glViewport(0, 0, width, height)
+        glViewport(0, 0, self.width, self.height)
         glEnable(GL_DEPTH_TEST)
         self.clock = pg.time.Clock() 
         self.time = pg.time
         self.running = True
-        self.fov = 45.0
-        self.near = 0.1
-        self.far = 100.0
-        self.aspect = width / height
-        self.projection = glm.perspective(glm.radians(self.fov), self.aspect, self.near, self.far)
-        self.view = glm.translate(glm.mat4(1.0), glm.vec3(0, 0, -5))
         
         self.activeScene = None
+        
     
    
         
@@ -42,7 +41,7 @@ class Mazed():
         
     def drawScene(self,dt):
         
-        self.activeScene.render(self.projection, self.view)
+        self.activeScene.render(self.mainCamera.projection,self.mainCamera.view)
         self.activeScene.update(dt)
         
         
@@ -53,9 +52,21 @@ class Mazed():
    
     def start(self):
         self.activeScene = Scene()
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height,cameraTarget=glm.vec3(0, 0, 0)))
+        self.mainCamera = self.mainCameraObject.getComponent(Camera)
+        self.mainCameraObject.addComponent(RotateCamera("RotateCamera",speed=1.0))
         cube = self.createCube((0,0,0))
         cube.addComponent(RotationScript("RotationScript",))
-       
+        cube = self.createCube((2,0,0))
+        cube.addComponent(RotationScript("RotationScript",))
+        cube = self.createCube((-2,0,0))
+        cube.addComponent(RotationScript("RotationScript",))
+        cube = self.createCube((0,2,0))
+        cube.addComponent(RotationScript("RotationScript",))
+        cube = self.createCube((0,-2,3))
+        cube.addComponent(RotationScript("RotationScript",))
+        cube = self.createCube((0,0,-2))
+        
         while self.running:
             
             for event in pg.event.get():

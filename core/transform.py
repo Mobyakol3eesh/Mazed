@@ -31,7 +31,7 @@ class Transform(Component):
     
     def translate(self,x , y, z):
         
-       
+       self.position += glm.vec3(x,y,z)
        self.translationMat = glm.translate(self.translationMat,glm.vec3(x,y,z))
        self.applyTransform()
         

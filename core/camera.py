@@ -1,0 +1,43 @@
+
+
+
+from core.component import Component
+from core.transform import Transform
+import glm
+
+
+class Camera(Component):
+    def __init__(self, name, near , far, fov, aspect,cameraTarget=glm.vec3(0, 0, 0)):
+      
+        super().__init__(name)
+        self.near = near
+        self.far = far
+        self.fov = fov
+        self.aspect = aspect
+        self.projection = glm.perspective(glm.radians(self.fov), self.aspect, self.near, self.far)
+        self.cameraTarget = cameraTarget
+        self.gameObject = None
+        self.cameraPosition = glm.vec3(0, 0, 0)
+        
+        
+        
+    def start(self):
+        self.cameraPosition = self.gameObject.getComponent(Transform).position
+        
+        self.updateViewMatrix()
+    
+    def update(self,deltaTime):
+        if self.cameraPosition != self.gameObject.getComponent(Transform).position:
+            self.cameraPosition = self.gameObject.getComponent(Transform).position
+        
+        self.updateViewMatrix()
+        
+    def updateViewMatrix(self):
+        self.view = glm.lookAt(
+            self.cameraPosition,  
+            self.cameraTarget,  
+            glm.vec3(0, 1, 0)   
+        )
+    
+        
+        
