@@ -26,7 +26,7 @@ class RotateCamera(MScript):
         transform = self.gameObject.getComponent(Transform)
        
         if transform:
-            print(transform.position.__str__())
+            
             camX = sin (pg.time.get_ticks() / 1000) * 10
             camY = cos (pg.time.get_ticks() / 1000) * 10
             

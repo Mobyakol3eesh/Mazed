@@ -13,7 +13,7 @@ from mesh.cube import *
 from mesh.mesh import Mesh
 from mesh.rotation_script import RotationScript 
 from MazedGame.Scripts.rotate_camera import RotateCamera
-
+from core.input import Input
 class Mazed():
     def __init__(self, width=800, height=600):
         pg.init()
@@ -30,7 +30,7 @@ class Mazed():
         self.clock = pg.time.Clock() 
         self.time = pg.time
         self.running = True
-        
+        self.input = Input()
         self.activeScene = None
         
     
@@ -52,7 +52,7 @@ class Mazed():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height,cameraTarget=glm.vec3(0, 0, 0)))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height,cameraForward=glm.vec3(0, 0, -1)))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
         self.mainCameraObject.addComponent(RotateCamera("RotateCamera",speed=1.0))
         cube = self.createCube((0,0,0))
@@ -69,16 +69,18 @@ class Mazed():
         
         while self.running:
             
-            for event in pg.event.get():
-                if event.type == QUIT:
-                    self.running = False
-                if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        self.running = False
+            self.input.update()
+            self.running = self.input.runningState()
+            if self.running == False:
+                pg.quit()
+                exit()
+                break
+                
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             
             
             dt = self.clock.tick(self.fps) / 1000.0
+            
             self.drawScene(dt)
             pg.display.flip()
             self.clock.tick(self.fps)

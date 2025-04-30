@@ -7,7 +7,7 @@ import glm
 
 
 class Camera(Component):
-    def __init__(self, name, near , far, fov, aspect,cameraTarget=glm.vec3(0, 0, 0)):
+    def __init__(self, name, near , far, fov, aspect,cameraForward=glm.vec3(0, 0, -1)):
       
         super().__init__(name)
         self.near = near
@@ -15,7 +15,7 @@ class Camera(Component):
         self.fov = fov
         self.aspect = aspect
         self.projection = glm.perspective(glm.radians(self.fov), self.aspect, self.near, self.far)
-        self.cameraTarget = cameraTarget
+        self.cameraForward = cameraForward
         self.gameObject = None
         self.cameraPosition = glm.vec3(0, 0, 0)
         
@@ -35,7 +35,7 @@ class Camera(Component):
     def updateViewMatrix(self):
         self.view = glm.lookAt(
             self.cameraPosition,  
-            self.cameraTarget,  
+            self.cameraPosition + self.cameraForward,  
             glm.vec3(0, 1, 0)   
         )
     
