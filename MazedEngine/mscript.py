@@ -3,7 +3,7 @@
 
 
 from abc import abstractmethod
-from core.component import Component
+from MazedEngine.component import Component
 
 class MScript(Component):
     

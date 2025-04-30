@@ -1,7 +1,7 @@
 
 
 from pyrr import Quaternion, Matrix44
-from core.component import Component
+from MazedEngine.component import Component
 import glm
 
 class Transform(Component):
@@ -12,7 +12,7 @@ class Transform(Component):
         self.orientation = Quaternion()
         
         self.position = glm.vec3(x, y, z)
-        
+        self.forward =  self.position + glm.vec3(0, 0, -1)
         
         self.translationMat = glm.mat4(1.0)
         self.scaleMat = glm.mat4(1.0)
@@ -31,7 +31,7 @@ class Transform(Component):
     
     def translate(self,x , y, z):
         
-       self.position += glm.vec3(x,y,z)
+       self.position += glm.vec3(x,y,-z)
        self.translationMat = glm.translate(self.translationMat,glm.vec3(x,y,z))
        self.applyTransform()
         

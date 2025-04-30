@@ -1,9 +1,9 @@
 from OpenGL.GL import *
-from core.opengl_buffers import openGLBuffer
-from core.opengl_utilities import OpenGLUtilities
+from MazedEngine.opengl_buffers import openGLBuffer
+from MazedEngine.opengl_utilities import OpenGLUtilities
 from mesh.shader import Shader
 from mesh.texture import Texture
-from core.transform import Transform
+from MazedEngine.transform import Transform
 from mesh.mesh import Mesh
 
 

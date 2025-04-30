@@ -1,5 +1,5 @@
 import pygame as pg
-from core.scene import Scene
+from MazedEngine.scene import Scene
 from mesh.mesh_renderer import MeshRenderer
 from mesh.mesh_filter import MeshFilter
 from mesh.material import Material
@@ -8,13 +8,16 @@ from mesh.game_object import GameObject
 from OpenGL.GL import *
 from math import *
 import glm
-from core.camera import Camera
+from MazedEngine.camera import Camera
 from mesh.cube import *
 from mesh.mesh import Mesh
 from mesh.rotation_script import RotationScript 
 from MazedGame.Scripts.rotate_camera import RotateCamera
-from core.input import Input
-class Mazed():
+from MazedEngine.input import Input
+from MazedGame.Scripts.camera_movment import cameraMovement
+
+
+class MazedEngine():
     def __init__(self, width=800, height=600):
         pg.init()
         self.width = width
@@ -55,6 +58,7 @@ class Mazed():
         self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height,cameraForward=glm.vec3(0, 0, -1)))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
         self.mainCameraObject.addComponent(RotateCamera("RotateCamera",speed=1.0))
+        self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
         cube = self.createCube((0,0,0))
         cube.addComponent(RotationScript("RotationScript",))
         cube = self.createCube((2,0,0))
@@ -97,5 +101,5 @@ class Mazed():
         
 
 if __name__ == "__main__":
-    Mazed().start()
+    MazedEngine().start()
     

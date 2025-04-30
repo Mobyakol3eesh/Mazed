@@ -1,4 +1,4 @@
-from core.transform import Transform
+from MazedEngine.transform import Transform
 from mesh.mesh_renderer import MeshRenderer
 
 class GameObject(object):

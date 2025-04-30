@@ -1,5 +1,5 @@
 from OpenGL.GL import *
-from core.opengl_utilities import OpenGLUtilities
+from MazedEngine.opengl_utilities import OpenGLUtilities
 import os 
 from glm import *
 class Shader:

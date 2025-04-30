@@ -5,7 +5,7 @@ import pygame as pg
 
 class Input:
     def __init__(self):
-        self.event = None
+        
         self.sensitivity = 0.2
 
         self.axis = {
@@ -15,13 +15,14 @@ class Input:
         "MouseY": 0.0  
     }
         self.state = True
-        self.keyHeld = None
+        self.keyDown = None
+        self.keyUp = None
         
     
  
     
     
-   
+    
     def getAxis(self, axisName):
         if axisName in self.axis:
             return self.axis[axisName]
@@ -31,15 +32,10 @@ class Input:
     
 
     def getKeyDown(self):
-        if self.event.type == KEYDOWN:
-            return self.event.key
-        return None
-    
+        return self.keyDown
    
     def getKeyUp(self):
-        if self.event.type == KEYUP:
-            return self.event.key
-        return None
+        return self.keyUp
     
  
    
@@ -49,7 +45,10 @@ class Input:
     
     def update(self):
         for event in pg.event.get():
-            
+            if event.type == KEYDOWN:
+                self.keyDown = event.key
+            if event.type == KEYUP:
+                self.keyUp = event.key
             if event.type == QUIT:
                 self.state = False
 
@@ -80,4 +79,4 @@ class Input:
                 self.axis["Horizontal"] = max(0.0, self.axis["Horizontal"] - self.sensitivity)
             elif self.axis["Horizontal"] < 0:
                 self.axis["Horizontal"] = min(0.0, self.axis["Horizontal"] + self.sensitivity)
-        print(self.axis.get("Vertical"),self.axis.get("Horizontal"))
+        

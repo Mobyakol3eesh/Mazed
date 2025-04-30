@@ -2,10 +2,10 @@ from mesh.mesh_filter import MeshFilter
 from mesh.material import Material
 
 from OpenGL.GL import *
-from core.opengl_utilities import OpenGLUtilities
-from core.opengl_buffers import openGLBuffer
-from core.component import Component
-from core.transform import Transform
+from MazedEngine.opengl_utilities import OpenGLUtilities
+from MazedEngine.opengl_buffers import openGLBuffer
+from MazedEngine.component import Component
+from MazedEngine.transform import Transform
 
 class MeshRenderer(Component):
     def __init__(self, material : Material):

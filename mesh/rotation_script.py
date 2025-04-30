@@ -1,5 +1,5 @@
-from core.mscript import MScript
-from core.transform import Transform
+from MazedEngine.mscript import MScript
+from MazedEngine.transform import Transform
 
 
 
