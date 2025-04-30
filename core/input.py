@@ -6,7 +6,7 @@ import pygame as pg
 class Input:
     def __init__(self):
         self.event = None
-        self.sensitivity = 0.1
+        self.sensitivity = 0.2
 
         self.axis = {
         "Horizontal": 0.0,
@@ -42,17 +42,12 @@ class Input:
         return None
     
  
-    def getkeysDown(self):
-        return self.keysDown
-    def getkeysUp(self):
-        return self.keysUp
+   
     
     def runningState(self):
         return self.state
-    def update(self):
-        
-       
     
+    def update(self):
         for event in pg.event.get():
             
             if event.type == QUIT:
@@ -62,7 +57,7 @@ class Input:
     
       
         if keys[K_w] or keys[K_UP]:
-            self.axis["Vertical"] += self.sensitivity
+            self.axis["Vertical"] += self.sensitivity 
         if keys[K_s] or keys[K_DOWN]:
             self.axis["Vertical"] -= self.sensitivity
         if keys[K_a] or keys[K_LEFT]:
