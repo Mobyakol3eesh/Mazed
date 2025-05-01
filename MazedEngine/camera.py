@@ -50,7 +50,7 @@ class Camera(Component):
         self.view = glm.lookAt(
             self.cameraPosition,  
             self.cameraPosition + self.cameraForward,  
-            glm.vec3(0, 1, 0)   
+            self.up # maybe??
         )
             
         
