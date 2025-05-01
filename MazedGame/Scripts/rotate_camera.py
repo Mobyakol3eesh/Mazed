@@ -19,9 +19,12 @@ class RotateCamera(MScript):
         
         if not self.camera:
             raise Exception("RotateCamera script requires a Camera component on the GameObject.")
-    
-    
+        self.transform = self.gameObject.getComponent(Transform)
+        self.transform.rotateQ(10,24 ,0)
+        
     def update(self, deltaTime):
-       
-        ...
+        
+        print(self.transform.forward)
+        
+        
         

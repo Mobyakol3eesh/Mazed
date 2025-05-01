@@ -17,11 +17,12 @@ class cameraMovement(MScript):
     def update(self, deltaTime):
         x = self.input.getAxis("Horizontal") if self.input.getAxis("Horizontal") else 0.0
         z = self.input.getAxis("Vertical") if self.input.getAxis("Vertical") else 0.0
+        transform = self.gameObject.getComponent(Transform)
         moveVector = glm.vec3(x, 0, z)
         if (moveVector.x != 0 and moveVector.z != 0): 
             moveVector = glm.normalize(moveVector)
         
         
         speed = 5.0
-        self.gameObject.getComponent(Transform).translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime )
+        transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
         

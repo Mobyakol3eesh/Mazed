@@ -55,7 +55,7 @@ class MazedEngine():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height,cameraForward=glm.vec3(0, 0, -1)))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
         self.mainCameraObject.addComponent(RotateCamera("RotateCamera",speed=1.0))
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
@@ -96,7 +96,7 @@ class MazedEngine():
         
     def createCube(self,position=(0,0,0)):
         cubeMesh = MeshFilter(Mesh("cube",cubeVertices,cubeIndices,cubeTexCoord,None))
-        cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="cube_shader")))
+        cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="basic_shader")))
         return cube
         
 
