@@ -24,7 +24,7 @@ class RotateCamera(MScript):
         
     def update(self, deltaTime):
         
-        # print(self.transform.forward)
+        
         ...
         
         

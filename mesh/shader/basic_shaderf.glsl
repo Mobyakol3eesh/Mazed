@@ -14,6 +14,6 @@ void main()
 {
     
     fragColor = isTextured ? 
-        mix(texture(texture0, texCoord), texture(texture1, texCoord), 0.2) : 
+        mix(texture(texture0, texCoord), texture(texture1, texCoord), 0.5) : 
         vec4(glColor, 1.0);
 }

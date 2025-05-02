@@ -3,7 +3,7 @@ from MazedEngine.mscript import MScript
 from MazedEngine.transform import Transform
 from MazedEngine.camera import Camera
 import glm
-
+import pyrr
 
 class cameraMovement(MScript):
     def __init__(self, name, inputRef):
@@ -17,7 +17,7 @@ class cameraMovement(MScript):
     def update(self, deltaTime):
         x = self.input.getAxis("Horizontal") if self.input.getAxis("Horizontal") else 0.0
         z = self.input.getAxis("Vertical") if self.input.getAxis("Vertical") else 0.0
-         
+        
         xdir = self.input.getAxis("MouseX") if self.input.getAxis("MouseX") else 0.0
         ydir = self.input.getAxis("MouseY") if self.input.getAxis("MouseY") else 0.0
         
@@ -29,5 +29,9 @@ class cameraMovement(MScript):
         
         speed = 5.0
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
-        transform.rotateQ(ydir * 0.3, xdir * 0.3, 0, local=True)
-        print(xdir,ydir)
+        transform.rotateQ(ydir * 0.3, xdir * 0.3, 0)
+        transform.orientation[2] = 0.0
+        
+        
+        
+        

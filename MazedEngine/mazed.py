@@ -24,12 +24,13 @@ class MazedEngine():
         self.height = height
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
-       
+        
+        
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         pg.mouse.set_pos(width // 2, height // 2)
         self.screen = pg.display.set_mode((self.width, self.height), DOUBLEBUF | OPENGL)
         self.objects = []
-        self.fps = 60
+        self.fps = 120
         glViewport(0, 0, self.width, self.height)
         glEnable(GL_DEPTH_TEST)
         self.clock = pg.time.Clock() 
@@ -63,6 +64,7 @@ class MazedEngine():
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
         cube = self.createCube((0,0,0))
         cube.addComponent(RotationScript("RotationScript",))
+        
         cube = self.createCube((2,0,0))
         cube.addComponent(RotationScript("RotationScript",))
         cube = self.createCube((-2,0,0))
@@ -72,6 +74,9 @@ class MazedEngine():
         cube = self.createCube((0,-2,3))
         cube.addComponent(RotationScript("RotationScript",))
         cube = self.createCube((0,0,-2))
+        cube.addComponent(RotationScript("RotationScript",))
+       
+        
         
         while self.running:
             
@@ -99,6 +104,7 @@ class MazedEngine():
     def createCube(self,position=(0,0,0)):
         cubeMesh = MeshFilter(Mesh("cube",cubeVertices,cubeIndices,cubeTexCoord,None))
         cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="basic_shader")))
+        
         return cube
         
 

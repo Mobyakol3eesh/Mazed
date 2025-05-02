@@ -53,28 +53,39 @@ class Transform(Component):
         self.applyTransform()
         
     def rotateQ(self, angleX,angleY, angleZ,local=True):
-        q = Quaternion.from_eulers(glm.vec3(glm.radians(angleX), glm.radians(angleY), glm.radians(angleZ)))
+        
+        
+        
+        qX = Quaternion.from_axis_rotation(self.baseRight, glm.radians(angleX))  
+        qY = Quaternion.from_axis_rotation(self.baseUp, glm.radians(angleY))     
+        qZ = Quaternion.from_axis_rotation(self.baseForward, glm.radians(angleZ))
         
         if local:
-            self.orientation = self.orientation * q
+            self.orientation = self.orientation * qY * qX * qZ
+            
         else:
-            self.orientation = q * self.orientation
+            self.orientation = qY * qX * qZ * self.orientation
+        
+        
         
         self.right = pyrr.quaternion.apply_to_vector(self.orientation, self.baseRight)
+        self.up = pyrr.quaternion.apply_to_vector(self.orientation, self.baseUp)
+        self.forward = pyrr.quaternion.apply_to_vector(self.orientation, self.baseForward)
+        
+        
+        
+        
+        
+        
         self.right = glm.normalize(self.right)
         self.right = glm.vec3(self.right.x, self.right.y, self.right.z)
-        
-        self.up = pyrr.quaternion.apply_to_vector(self.orientation, self.baseUp)
         self.up = glm.normalize(self.up)
         self.up = glm.vec3(self.up.x, self.up.y, self.up.z)
-        
-        
-        self.forward = pyrr.quaternion.apply_to_vector(self.orientation, self.baseForward)
         self.forward = glm.normalize(self.forward)
         self.forward = glm.vec3(self.forward.x, self.forward.y, self.forward.z)
         
         self.applyTransform()
-    
+      
 
     def matFromQ(self):
         rotationMat = Matrix44.from_quaternion(self.orientation)
@@ -83,7 +94,7 @@ class Transform(Component):
     def applyTransform(self):
         rotationMat = self.matFromQ()
         
-        self.modelMat =  self.translationMat  * (rotationMat * self.scaleMat)
+        self.modelMat =  (self.translationMat  * (rotationMat * self.scaleMat))
         
         
     def getModelMatrix(self):
