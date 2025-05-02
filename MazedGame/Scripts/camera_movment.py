@@ -29,5 +29,5 @@ class cameraMovement(MScript):
         
         speed = 5.0
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
-        transform.rotateQ(ydir * 0.1, xdir * 0.1, 0, local=True)
+        transform.rotateQ(ydir * 0.3, xdir * 0.3, 0, local=True)
         print(xdir,ydir)
