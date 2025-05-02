@@ -24,7 +24,10 @@ class MazedEngine():
         self.height = height
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
+        self.xpos = width // 2
+        self.ypos = height // 2
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
+        pg.mouse.set_pos(width // 2, height // 2)
         self.screen = pg.display.set_mode((self.width, self.height), DOUBLEBUF | OPENGL)
         self.objects = []
         self.fps = 60

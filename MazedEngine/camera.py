@@ -28,7 +28,7 @@ class Camera(Component):
         self.cameraPosition = self.gameObject.getComponent(Transform).position
         self.gameObject.getComponent(Transform).forward = self.cameraForward
         self.gameObject.getComponent(Transform).baseForward = self.cameraForward
-        self.gameObject.getComponent(Transform).up = self.up
+        
         self.updateViewMatrix()
     
     def update(self,deltaTime):

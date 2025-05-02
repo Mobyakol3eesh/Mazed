@@ -49,9 +49,19 @@ class Input:
                 self.keyDown = event.key
             if event.type == KEYUP:
                 self.keyUp = event.key
+            if event.type == MOUSEMOTION:
+                self.axis["MouseX"] = -event.rel[0] * self.sensitivity
+                self.axis["MouseY"] = -event.rel[1] * self.sensitivity
+                if  pg.mouse.get_focused():
+                    pg.mouse.set_pos(pg.mouse.get_pos()[0], pg.mouse.get_pos()[1])
+                if not pg.mouse.get_focused():
+                    print("Mouse not focused")
+                    
+                    self.axis["MouseX"] = 0.0
+                    self.axis["MouseY"] = 0.0
             if event.type == QUIT:
                 self.state = False
-
+        
         keys = pg.key.get_pressed()
     
       
