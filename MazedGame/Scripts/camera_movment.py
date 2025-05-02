@@ -28,6 +28,8 @@ class cameraMovement(MScript):
         
         
         speed = 5.0
+        forward = transform.forward
+        transform.forward = glm.vec3(forward.x, 0, forward.z)
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
         transform.rotateQ(ydir * 0.3, xdir * 0.3, 0)
         transform.orientation[2] = 0.0
