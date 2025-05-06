@@ -43,6 +43,7 @@ class openGLBuffer:
         #     print("isRGB")
         
         if isTextured:
+            print("isTextured")
             glVertexAttribPointer(vertexAttrIndex + 1, self.texCoord, GL_FLOAT, GL_FALSE, self.stride * sizeof(c_float), c_void_p((self.vectorSize) * sizeof(c_float)))
             glEnableVertexAttribArray(vertexAttrIndex + 1)
             

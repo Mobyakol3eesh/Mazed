@@ -1,4 +1,6 @@
 import pygame as pg
+import trimesh
+import trimesh.scene
 from MazedEngine.scene import Scene
 from mesh.mesh_renderer import MeshRenderer
 from mesh.mesh_filter import MeshFilter
@@ -12,9 +14,10 @@ from MazedEngine.camera import Camera
 from mesh.cube import *
 from mesh.mesh import Mesh
 from mesh.rotation_script import RotationScript 
-from MazedGame.Scripts.rotate_camera import RotateCamera
+
 from MazedEngine.input import Input
 from MazedGame.Scripts.camera_movment import cameraMovement
+from mesh.plane import *
 
 
 class MazedEngine():
@@ -22,11 +25,13 @@ class MazedEngine():
         pg.init()
         self.width = width
         self.height = height
+        
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLEBUFFERS, 1)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, 4)
-        
+        trimesh.util.attach_to_log()
         
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
+       
         pg.mouse.set_pos(width // 2, height // 2)
         self.screen = pg.display.set_mode((self.width, self.height), DOUBLEBUF | OPENGL)
         self.objects = []
@@ -39,14 +44,14 @@ class MazedEngine():
         self.input = Input()
         self.activeScene = None
         
-    
-   
-        
+        glEnable(GL_DEBUG_OUTPUT)
+        glDisable(GL_LIGHTING)
+        glDisable(GL_FOG)
     
     
         
     def drawScene(self,dt):
-        
+     
         self.activeScene.render(self.mainCamera.projection,self.mainCamera.view)
         self.activeScene.update(dt)
         
@@ -58,23 +63,26 @@ class MazedEngine():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(0,0,9),Camera("MainCamera",near=0.1,far=100.0,fov=45.0,aspect=self.width/self.height))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-500,-70,500),Camera("MainCamera",near=0.1,far=1000.0,fov=45.0,aspect=self.width/self.height))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
-        self.mainCameraObject.addComponent(RotateCamera("RotateCamera",speed=1.0))
+     
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
-        cube = self.createCube((0,0,0))
-        cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((0,0,0))
+        # cube.addComponent(RotationScript("RotationScript",))
         
-        cube = self.createCube((2,0,0))
-        cube.addComponent(RotationScript("RotationScript",))
-        cube = self.createCube((-2,0,0))
-        cube.addComponent(RotationScript("RotationScript",))
-        cube = self.createCube((0,2,0))
-        cube.addComponent(RotationScript("RotationScript",))
-        cube = self.createCube((0,-2,3))
-        cube.addComponent(RotationScript("RotationScript",))
-        cube = self.createCube((0,0,-2))
-        cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((2,0,0))
+        # cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((-2,0,0))
+        # cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((0,2,0))
+        # cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((0,-2,3))
+        # cube.addComponent(RotationScript("RotationScript",))
+        # cube = self.createCube((0,0,-2))
+        # cube.addComponent(RotationScript("RotationScript",))
+        plane = self.createPlane((0,0,0),textrures=['wallborder.png'])
+        plane.getComponent(Transform).scale(1000,1000,2000)
+        plane.getComponent(Transform).rotateQ(90,0,0)
        
         
         
@@ -106,8 +114,23 @@ class MazedEngine():
         cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="basic_shader")))
         
         return cube
+    
+    def createPlane(self,position=(0,0,0),textrures=["wall.jpg"]):
+        planeMesh = MeshFilter(Mesh("plane",planeVertices,planeIndices,planeTexCoord,None))
+        plane = self.activeScene.createGameObject("Plane",position,planeMesh,MeshRenderer(Material("plane",None,textures=textrures,shaderName="basic_shader")))
         
+        return plane
+    def importMesh(self,meshName,position=(0,0,0)):
+      
+        mesh = trimesh.load_mesh(f"mazedgame/meshes/{meshName}.obj")
+      
+        print("Vertex range:", mesh.vertices.min(axis=0), mesh.vertices.max(axis=0))
+        print("Face counts:", len(mesh.faces))
+        mesh = MeshFilter(Mesh(meshName,mesh.vertices,mesh.faces,None,None))
+        meshObject = self.activeScene.createGameObject(meshName,position,mesh,MeshRenderer(Material(meshName,[255,255,255],textures=[],shaderName="basic_shader")))
 
+        
+        
 if __name__ == "__main__":
     MazedEngine().start()
     

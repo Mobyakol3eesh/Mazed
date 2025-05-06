@@ -25,6 +25,8 @@ class Scene:
         for gameObject in self.gameObjects:
             gameObject.update(deltaTime)
     
+    
+    
     def render(self,projectionMatrix, viewMatrix):
         for gameObject in self.gameObjects:
             gameObject.render(projectionMatrix, viewMatrix)

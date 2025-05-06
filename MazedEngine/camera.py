@@ -24,6 +24,7 @@ class Camera(Component):
         self.orietation = Quaternion()
         self.rotationMat = glm.mat4(1.0)
         
+        
     def start(self):
         self.cameraPosition = self.gameObject.getComponent(Transform).position
         self.gameObject.getComponent(Transform).forward = self.cameraForward
@@ -50,7 +51,7 @@ class Camera(Component):
         self.view = glm.lookAt(
             self.cameraPosition,  
             self.cameraPosition + self.cameraForward,  
-            self.up # maybe??
+            self.up 
         )
             
         

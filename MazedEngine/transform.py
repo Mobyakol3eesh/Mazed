@@ -36,11 +36,15 @@ class Transform(Component):
         self.translationMat = glm.translate(glm.mat4(1.0), self.position)
         self.applyTransform()
     
-    def translate(self,x , y, z):
+    def translate(self,x , y, z,local=True):
         
         right = glm.normalize(glm.cross(self.forward, self.up))
         up = glm.normalize(glm.cross(right, self.forward))
-        move = right * x + up * y + self.forward * z
+        
+        if local:
+            move = right * x + up * y + self.forward * z
+        else:
+            move = glm.vec3(x, y, z)
         self.position += move
         self.translationMat = glm.translate(glm.mat4(1.0), self.position)
        
@@ -52,7 +56,7 @@ class Transform(Component):
         self.scaleMat = glm.scale(glm.mat4(1.0),glm.vec3(x,y,z))
         self.applyTransform()
         
-    def rotateQ(self, angleX,angleY, angleZ,local=True):
+    def rotateQ(self, angleX,angleY, angleZ,local=True,fps=False):
         
         
         
@@ -66,27 +70,44 @@ class Transform(Component):
         else:
             self.orientation = qY * qX * qZ * self.orientation
         
-        
-        
-        self.right = pyrr.quaternion.apply_to_vector(self.orientation, self.baseRight)
-        self.up = pyrr.quaternion.apply_to_vector(self.orientation, self.baseUp)
+        self.orientation = self.orientation.normalised
+       
         self.forward = pyrr.quaternion.apply_to_vector(self.orientation, self.baseForward)
-        
-        
-        
-        
-        
-        
-        self.right = glm.normalize(self.right)
-        self.right = glm.vec3(self.right.x, self.right.y, self.right.z)
-        self.up = glm.normalize(self.up)
-        self.up = glm.vec3(self.up.x, self.up.y, self.up.z)
+      
         self.forward = glm.normalize(self.forward)
         self.forward = glm.vec3(self.forward.x, self.forward.y, self.forward.z)
         
+        if fps:
+            
+            self.right = glm.normalize(glm.cross(self.forward, self.baseUp))
+            self.up = glm.normalize(glm.cross(self.right, self.forward))
+            print(self.forward)
+            self.rotMatfromDir()
+        else: 
+            self.right = pyrr.quaternion.apply_to_vector(self.orientation, self.baseRight)
+            self.up = pyrr.quaternion.apply_to_vector(self.orientation, self.baseUp)
+        
+        
+        
+        
+        
+        # self.right = glm.normalize(self.right)
+        # self.right = glm.vec3(self.right.x, self.right.y, self.right.z)
+        # self.up = glm.normalize(self.up)
+        # self.up = glm.vec3(self.up.x, self.up.y, self.up.z)
+      
+        
         self.applyTransform()
       
-
+    def rotMatfromDir(self):
+        rotMat = glm.mat4(1.0)
+        rotMat[0] = glm.vec4(self.right, 0.0)
+        rotMat[1] = glm.vec4(self.up, 0.0)
+        rotMat[2] = glm.vec4(self.forward, 0.0)
+        self.rotationMat = rotMat
+      
+        
+    
     def matFromQ(self):
         rotationMat = Matrix44.from_quaternion(self.orientation)
         rotationMat = glm.mat4(rotationMat)
