@@ -81,7 +81,7 @@ class Transform(Component):
             
             self.right = glm.normalize(glm.cross(self.forward, self.baseUp))
             self.up = glm.normalize(glm.cross(self.right, self.forward))
-            print(self.forward)
+            
             self.rotMatfromDir()
         else: 
             self.right = pyrr.quaternion.apply_to_vector(self.orientation, self.baseRight)
@@ -120,4 +120,6 @@ class Transform(Component):
         
     def getModelMatrix(self):
         return self.modelMat
-        
+    
+    def getPosition(self):
+        return self.position

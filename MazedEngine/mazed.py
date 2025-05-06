@@ -18,7 +18,7 @@ from mesh.rotation_script import RotationScript
 from MazedEngine.input import Input
 from MazedGame.Scripts.camera_movment import cameraMovement
 from mesh.plane import *
-
+from mesh.objects_movment import objectMovement
 
 class MazedEngine():
     def __init__(self, width=800, height=600):
@@ -63,28 +63,18 @@ class MazedEngine():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-500,-70,500),Camera("MainCamera",near=0.1,far=1000.0,fov=45.0,aspect=self.width/self.height))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-480,-70,500),Camera("MainCamera",near=0.1,far=1000.0,fov=45.0,aspect=self.width/self.height))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
      
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
-        # cube = self.createCube((0,0,0))
-        # cube.addComponent(RotationScript("RotationScript",))
         
-        # cube = self.createCube((2,0,0))
-        # cube.addComponent(RotationScript("RotationScript",))
-        # cube = self.createCube((-2,0,0))
-        # cube.addComponent(RotationScript("RotationScript",))
-        # cube = self.createCube((0,2,0))
-        # cube.addComponent(RotationScript("RotationScript",))
-        # cube = self.createCube((0,-2,3))
-        # cube.addComponent(RotationScript("RotationScript",))
-        # cube = self.createCube((0,0,-2))
-        # cube.addComponent(RotationScript("RotationScript",))
         plane = self.createPlane((0,0,0),textrures=['wallborder.png'])
         plane.getComponent(Transform).scale(1000,1000,2000)
         plane.getComponent(Transform).rotateQ(90,0,0)
        
-        
+        plane = self.createPlane((0,-40,0),textrures=['wall.jpg'])
+        plane.getComponent(Transform).scale(100,100,200)
+        plane.addComponent(objectMovement("ObjectMovement",self.input))
         
         while self.running:
             
