@@ -1,6 +1,6 @@
 import pygame as pg
 import trimesh
-import trimesh.scene
+
 from MazedEngine.scene import Scene
 from mesh.mesh_renderer import MeshRenderer
 from mesh.mesh_filter import MeshFilter
@@ -21,7 +21,7 @@ from mesh.plane import *
 from mesh.objects_movment import objectMovement
 
 class MazedEngine():
-    def __init__(self, width=800, height=600):
+    def __init__(self, width=1200, height=800):
         pg.init()
         self.width = width
         self.height = height
@@ -44,9 +44,7 @@ class MazedEngine():
         self.input = Input()
         self.activeScene = None
         
-        glEnable(GL_DEBUG_OUTPUT)
-        glDisable(GL_LIGHTING)
-        glDisable(GL_FOG)
+       
     
     
         
@@ -63,19 +61,47 @@ class MazedEngine():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-480,-70,500),Camera("MainCamera",near=0.1,far=1000.0,fov=45.0,aspect=self.width/self.height))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-480,-70,500),Camera("MainCamera",near=0.1,far=2000.0,fov=70.0,aspect=self.width/self.height))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
      
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
         
-        plane = self.createPlane((0,0,0),textrures=['wallborder.png'])
+        plane = self.createPlane((0,0,0),textures=['wallborder.png'])
         plane.getComponent(Transform).scale(1000,1000,2000)
         plane.getComponent(Transform).rotateQ(90,0,0)
-       
-        plane = self.createPlane((0,-40,0),textrures=['wall.jpg'])
-        plane.getComponent(Transform).scale(100,100,200)
-        plane.addComponent(objectMovement("ObjectMovement",self.input))
+        for i in range(0,10):
+            if(i == 3 or  i == 6 or i==7):
+                continue
+            plane = self.createPlane((-460 +  100 * i ,-60,400),textures=['wall.jpg'])
+            plane.getComponent(Transform).scale(100,100,200)
         
+        for i in range(0,7):
+              
+            plane = self.createPlane((-460 + 600 -60,-60,361 - i * 100),textures=["wall.jpg"])
+            plane.getComponent(Transform).scale(100,100,200)
+            plane.getComponent(Transform).rotateQ(0,90,0)
+        
+        for i in range(0,8):
+            plane = self.createPlane((-460 + 700 -60,-60,361 - i * 100),textures=["wall.jpg"])
+            plane.getComponent(Transform).scale(100,100,200)
+            plane.getComponent(Transform).rotateQ(0,90,0)
+        for i in range(0,5):
+            plane = self.createPlane((-460 + 600 - i * 100, -60 ,-380))
+            plane.getComponent(Transform).scale(100,100,200)
+        
+        for i in range(0,7):
+            if(i == 3):
+                continue
+            plane = self.createPlane((-460 + 700 + 60,-60,340 - i * 100),textures=["wall.jpg"])
+            plane.getComponent(Transform).scale(100,100,200)
+            plane.getComponent(Transform).rotateQ(0,90,0)
+        for i in range(0,4):
+            plane = self.createPlane((-460 + 700 + i * 100, -60 ,360 -650))
+            plane.getComponent(Transform).scale(100,100,200)
+        for i in range (0,7):
+            plane = self.createPlane((-460 + 250 , -60 ,361 -600 + i * 100))
+            plane.getComponent(Transform).scale(100,100,200)
+            plane.getComponent(Transform).rotateQ(0,90,0)
         while self.running:
             
             self.input.update()
@@ -105,9 +131,9 @@ class MazedEngine():
         
         return cube
     
-    def createPlane(self,position=(0,0,0),textrures=["wall.jpg"]):
+    def createPlane(self,position=(0,0,0),textures=["wall.jpg"]):
         planeMesh = MeshFilter(Mesh("plane",planeVertices,planeIndices,planeTexCoord,None))
-        plane = self.activeScene.createGameObject("Plane",position,planeMesh,MeshRenderer(Material("plane",None,textures=textrures,shaderName="basic_shader")))
+        plane = self.activeScene.createGameObject("Plane",position,planeMesh,MeshRenderer(Material("plane",None,textures=textures,shaderName="basic_shader")))
         
         return plane
     def importMesh(self,meshName,position=(0,0,0)):

@@ -79,7 +79,7 @@ class Transform(Component):
         
         if fps:
             
-            self.right = glm.normalize(glm.cross(self.forward, self.baseUp))
+            self.right = glm.normalize(glm.cross(self.forward, glm.vec3(*self.baseUp)))
             self.up = glm.normalize(glm.cross(self.right, self.forward))
             
             self.rotMatfromDir()
@@ -87,8 +87,8 @@ class Transform(Component):
             self.right = pyrr.quaternion.apply_to_vector(self.orientation, self.baseRight)
             self.up = pyrr.quaternion.apply_to_vector(self.orientation, self.baseUp)
         
-        
-        
+
+
         
         
         # self.right = glm.normalize(self.right)

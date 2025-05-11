@@ -22,10 +22,10 @@ class cameraMovement(MScript):
         
         xdir = self.input.getAxis("MouseX") if self.input.getAxis("MouseX") else 0.0
         ydir = self.input.getAxis("MouseY") if self.input.getAxis("MouseY") else 0.0
-        self.pitch += ydir * 0.3
-        self.yaw += xdir * 0.3
+        self.pitch += ydir * 0.5
+        self.yaw += xdir * 0.5
         self.yaw = glm.clamp(self.yaw, -40.0, 40.0)
-        self.pitch = glm.clamp(self.pitch, -40.0, 40.0)
+        self.pitch = glm.clamp(self.pitch, -30.0, 40.0)
       
       
         transform = self.gameObject.getComponent(Transform)
@@ -33,22 +33,22 @@ class cameraMovement(MScript):
         if (moveVector.x != 0 and moveVector.z != 0): 
             moveVector = glm.normalize(moveVector)
        
-        speed = 100.0
+        speed = 200.0
         forward = transform.forward
         transform.forward = glm.vec3(forward.x, 0, forward.z)
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
-        if self.pitch <= -40.0 or self.pitch >= 40.0:
+        if self.pitch <= -30.0 or self.pitch >= 40.0:
       
-            transform.rotateQ(0, xdir * 0.3, 0,fps=True)
+            transform.rotateQ(0, xdir * 0.5, 0,fps=True)
          
         
         else:
-            transform.rotateQ(ydir * 0.3, xdir * 0.3, 0,fps=False)
+            transform.rotateQ(ydir * 0.5, xdir * 0.5, 0,fps=False)
         if self.yaw <= -40.0 or self.yaw >= 40.0:
-            transform.rotateQ(ydir * 0.3, 0, 0,fps=True)
+            transform.rotateQ(ydir * 0.5, 0, 0,fps=True)
         else:
-            transform.rotateQ(0, xdir * 0.3, 0,fps=True)
-       
+            transform.rotateQ(0, xdir * 0.5, 0,fps=True)
+        print(transform.position)
         
         
         
