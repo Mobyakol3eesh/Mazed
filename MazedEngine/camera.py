@@ -38,7 +38,8 @@ class Camera(Component):
         if self.cameraForward != self.gameObject.getComponent(Transform).forward:
             self.cameraForward = self.gameObject.getComponent(Transform).forward
         if self.up != self.gameObject.getComponent(Transform).up:
-            self.up = self.gameObject.getComponent(Transform).up
+             self.up = self.gameObject.getComponent(Transform).up
+        # self.gameObject.getComponent(Transform).orientation[2] = 0
         # if self.orietation != self.gameObject.getComponent(Transform).orientation:
         #     self.orietation = self.gameObject.getComponent(Transform).orientation
         # self.rotationMat = self.gameObject.getComponent(Transform).matFromQ()

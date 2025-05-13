@@ -1,6 +1,6 @@
 import pygame as pg
 import trimesh
-
+from MazedEngine.box_collider import BoxCollider
 from MazedEngine.scene import Scene
 from mesh.mesh_renderer import MeshRenderer
 from mesh.mesh_filter import MeshFilter
@@ -17,7 +17,7 @@ from mesh.rotation_script import RotationScript
 
 from MazedEngine.input import Input
 from MazedGame.Scripts.camera_movment import cameraMovement
-from mesh.plane import *
+from mesh.wall import *
 from mesh.objects_movment import objectMovement
 
 class MazedEngine():
@@ -44,7 +44,7 @@ class MazedEngine():
         self.input = Input()
         self.activeScene = None
         
-       
+        self.colliders = []
     
     
         
@@ -61,48 +61,70 @@ class MazedEngine():
    
     def start(self):
         self.activeScene = Scene()
-        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-480,-70,500),Camera("MainCamera",near=0.1,far=2000.0,fov=70.0,aspect=self.width/self.height))
+        self.mainCameraObject = self.activeScene.createGameObject("MainCamera",(-480,-70,500),Camera("MainCamera",near=0.1,far=5000.0,fov=70.0,aspect=self.width/self.height))
         self.mainCamera = self.mainCameraObject.getComponent(Camera)
      
         self.mainCameraObject.addComponent(cameraMovement("CameraMovment",self.input))
+        self.mainCameraObject.addComponent(BoxCollider("camCollider",position=self.mainCameraObject.getComponent(Transform).position, scale=[1,1,1]))
+        self.colliders.append(self.mainCameraObject.getComponent(BoxCollider))
         
-        plane = self.createPlane((0,0,0),textures=['wallborder.png'])
-        plane.getComponent(Transform).scale(1000,1000,2000)
-        plane.getComponent(Transform).rotateQ(90,0,0)
-        for i in range(0,10):
-            if(i == 3 or  i == 6 or i==7):
+        wall = self.createWall((0,0,0),color=[0,255,255],textures=["wallborder.png"])
+        wall.getComponent(Transform).scale(2000,5000,2000)
+        wall.getComponent(Transform).rotateQ(90,0,0)
+
+        # box1 = BoxCollider("coll",position=[0,0,0], scale=[2000,5000,2000])
+        # box2 = BoxCollider("coll",position=[0,10000,0], scale=[10,10,10])
+        # if (BoxCollider.checkCollision(box1,box2)):
+        #     print("Collision")
+        # else:
+        #     print("No Collision")
+        #first horizontal wall
+        for i in range(0,20):
+            if(i == 11 or  i == 12 or i==17):
                 continue
-            plane = self.createPlane((-460 +  100 * i ,-60,400),textures=['wall.jpg'])
-            plane.getComponent(Transform).scale(100,100,200)
+            wall = self.createWall((-960 +  100 * i ,-60,400),textures=[])    
+            wall.getComponent(Transform).scale(100,100,200)
+            wall.addComponent(BoxCollider("wallCol" + i.__str__(),position=[-960 + 100 * i,0,400], scale=[100,100,100]))
+            self.colliders.append(wall.getComponent(BoxCollider))
         
         for i in range(0,7):
               
-            plane = self.createPlane((-460 + 600 -60,-60,361 - i * 100),textures=["wall.jpg"])
-            plane.getComponent(Transform).scale(100,100,200)
-            plane.getComponent(Transform).rotateQ(0,90,0)
+            wall = self.createWall((-460 + 600 -60,-60,361 - i * 100),textures=[])
+            wall.getComponent(Transform).scale(100,100,200)
+            wall.getComponent(Transform).rotateQ(0,90,0)
         
         for i in range(0,8):
-            plane = self.createPlane((-460 + 700 -60,-60,361 - i * 100),textures=["wall.jpg"])
-            plane.getComponent(Transform).scale(100,100,200)
-            plane.getComponent(Transform).rotateQ(0,90,0)
-        for i in range(0,5):
-            plane = self.createPlane((-460 + 600 - i * 100, -60 ,-380))
-            plane.getComponent(Transform).scale(100,100,200)
+            wall = self.createWall((-460 + 700 -60,-60,361 - i * 100),textures=[])
+            wall.getComponent(Transform).scale(100,100,200)
+            wall.getComponent(Transform).rotateQ(0,90,0)
+        #top center horizontal wall
+        for i in range(0,15):
+            if(i == 7 or i == 9):
+                continue
+            wall = self.createWall((-960 + i * 100, -60 ,-380))
+            wall.getComponent(Transform).scale(100,100,200)
         
         for i in range(0,7):
             if(i == 3):
                 continue
-            plane = self.createPlane((-460 + 700 + 60,-60,340 - i * 100),textures=["wall.jpg"])
-            plane.getComponent(Transform).scale(100,100,200)
-            plane.getComponent(Transform).rotateQ(0,90,0)
-        for i in range(0,4):
-            plane = self.createPlane((-460 + 700 + i * 100, -60 ,360 -650))
-            plane.getComponent(Transform).scale(100,100,200)
+            wall = self.createWall((-460 + 700 + 60,-60,340 - i * 100),textures=[])
+            wall.getComponent(Transform).scale(100,100,200)
+            wall.getComponent(Transform).rotateQ(0,90,0)
+        
+        #top right horizontal wall
+        for i in range(0,8):
+            wall = self.createWall((-460 + 700 + i * 100, -60 ,360 -650))
+            wall.getComponent(Transform).scale(100,100,200)
+            
+
         for i in range (0,7):
-            plane = self.createPlane((-460 + 250 , -60 ,361 -600 + i * 100))
-            plane.getComponent(Transform).scale(100,100,200)
-            plane.getComponent(Transform).rotateQ(0,90,0)
+            wall = self.createWall((-460 + 250 , -60 ,361 -600 + i * 100))
+            wall.getComponent(Transform).scale(100,100,200)
+            wall.getComponent(Transform).rotateQ(0,90,0)
         while self.running:
+            if not self.mainCameraObject.getComponent(BoxCollider).isColliding:
+                self.mainCameraObject.getComponent(BoxCollider).updateLastSafePosition() 
+            BoxCollider.checkAllCollisions(self.colliders)
             
             self.input.update()
             self.running = self.input.runningState()
@@ -127,15 +149,15 @@ class MazedEngine():
         
     def createCube(self,position=(0,0,0)):
         cubeMesh = MeshFilter(Mesh("cube",cubeVertices,cubeIndices,cubeTexCoord,None))
-        cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=["wall.jpg"],shaderName="basic_shader")))
+        cube = self.activeScene.createGameObject("Cube",position,cubeMesh,MeshRenderer(Material("cube",None,textures=[],shaderName="basic_shader")))
         
         return cube
     
-    def createPlane(self,position=(0,0,0),textures=["wall.jpg"]):
-        planeMesh = MeshFilter(Mesh("plane",planeVertices,planeIndices,planeTexCoord,None))
-        plane = self.activeScene.createGameObject("Plane",position,planeMesh,MeshRenderer(Material("plane",None,textures=textures,shaderName="basic_shader")))
+    def createWall(self,position=(0,0,0),color=[255,255,255], textures=[]):
+        wallMesh = MeshFilter(Mesh("wall",wallVertices,wallIndices,wallTexCoord,None))
+        wall= self.activeScene.createGameObject("wall",position,wallMesh,MeshRenderer(Material("wall",color=color,textures=textures,shaderName="basic_shader")))
         
-        return plane
+        return wall
     def importMesh(self,meshName,position=(0,0,0)):
       
         mesh = trimesh.load_mesh(f"mazedgame/meshes/{meshName}.obj")

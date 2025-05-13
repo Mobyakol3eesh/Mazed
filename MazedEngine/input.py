@@ -58,6 +58,7 @@ class Input:
                     self.axis["MouseY"] = -event.rel[1] * self.sensitivity
                 else :
                     print("Mouse not focused")     
+                    
                     self.axis["MouseX"] = 0.0
                     self.axis["MouseY"] = 0.0
             if event.type == QUIT:

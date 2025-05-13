@@ -36,6 +36,7 @@ class cameraMovement(MScript):
         speed = 200.0
         forward = transform.forward
         transform.forward = glm.vec3(forward.x, 0, forward.z)
+        # transform.orientation[2] = 0
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
         if self.pitch <= -30.0 or self.pitch >= 40.0:
       
@@ -48,7 +49,7 @@ class cameraMovement(MScript):
             transform.rotateQ(ydir * 0.5, 0, 0,fps=True)
         else:
             transform.rotateQ(0, xdir * 0.5, 0,fps=True)
-        print(transform.position)
+        # print(transform.position)
         
         
         

@@ -1,6 +1,6 @@
 
-planeVertices = [
-    #
+wallVertices = [
+    
     [ 0.5,  0.5,  0.05],
     [ 0.5, -0.5,  0.05],
     [-0.5, -0.5,  0.05],
@@ -36,7 +36,7 @@ planeVertices = [
     [ 0.5, -0.5, -0.05],
 ]
 
-planeIndices = [
+wallIndices = [
     0, 1, 2, 2, 3, 0,       
     4, 7, 6, 6, 5, 4,       
     8, 9,10,10,11, 8,       
@@ -45,7 +45,7 @@ planeIndices = [
    20,23,22,22,21,20,       
 ]
 
-planeTexCoord = [
+wallTexCoord = [
    
     1.0, 1.0,
     1.0, 0.0,
