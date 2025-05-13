@@ -15,7 +15,7 @@ class cameraMovement(MScript):
     def start(self):
         self.camera = self.gameObject.getComponent(Camera)
 
-       
+    
     def update(self, deltaTime):
         x = self.input.getAxis("Horizontal") if self.input.getAxis("Horizontal") else 0.0
         z = self.input.getAxis("Vertical") if self.input.getAxis("Vertical") else 0.0
@@ -33,10 +33,10 @@ class cameraMovement(MScript):
         if (moveVector.x != 0 and moveVector.z != 0): 
             moveVector = glm.normalize(moveVector)
        
-        speed = 200.0
+        speed = 500.0
         forward = transform.forward
         transform.forward = glm.vec3(forward.x, 0, forward.z)
-        # transform.orientation[2] = 0
+        
         transform.translate(moveVector.x * deltaTime * speed, 0, moveVector.z * speed * deltaTime) 
         if self.pitch <= -30.0 or self.pitch >= 40.0:
       
@@ -49,7 +49,7 @@ class cameraMovement(MScript):
             transform.rotateQ(ydir * 0.5, 0, 0,fps=True)
         else:
             transform.rotateQ(0, xdir * 0.5, 0,fps=True)
-        # print(transform.position)
+        
         
         
         

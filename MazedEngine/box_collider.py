@@ -3,7 +3,7 @@ from MazedEngine.transform import Transform
 import glm
 
 class BoxCollider(Component):
-    def __init__(self, name, position, scale):
+    def __init__(self, name, position, scale, isTrigger=False):
         super().__init__(name)
         self.position = glm.vec3(*position)
         self.scale = glm.vec3(*scale)
@@ -11,7 +11,8 @@ class BoxCollider(Component):
         self.lastSafePosition = glm.vec3(*position)
         self.collisionNormal = glm.vec3(0, 0, 0)
         self.pushBackForce = 0.1  
-
+        self.onCollisionEnter = None
+        self.isTrigger = False
     def updateLastSafePosition(self):
         
         transform = self.gameObject.getComponent(Transform)
@@ -34,19 +35,27 @@ class BoxCollider(Component):
             self.collisionNormal = glm.normalize(self.position - other.position)
         return colliding
 
-    def handleCollision(self):
+    def handleCollision(self,other):
+        if not self.isTrigger:
+            transform = self.gameObject.getComponent(Transform)
+
+
+            transform.setPosition(*self.lastSafePosition)
+
+
+            pushBack = self.collisionNormal * self.pushBackForce
+            transform.translate(pushBack.x, 0, pushBack.z)
         
-        transform = self.gameObject.getComponent(Transform)
+        
+        if self.onCollisionEnter:
+            self.onCollisionEnter(other)
+           
         
         
-        transform.setPosition(*self.lastSafePosition)
-        
-       
-        pushBack = self.collisionNormal * self.pushBackForce
-        transform.translate(pushBack.x, pushBack.y, pushBack.z)
-        
-       
-        
+
+
+    def onCollisionEnter(self):
+        pass
 
     def update(self, deltaTime):
         
@@ -57,17 +66,21 @@ class BoxCollider(Component):
     def checkAllCollisions(colliders):
         
      
-        cam = next((c for c in colliders if c.name == 'camCollider'), None)
-        if not cam:
+        active = next((c for c in colliders if c.name == 'activeCollider'), None)
+        if not active:
             return
 
        
-        cam.isColliding = False
+        active.isColliding = False
         for obj in colliders:
-            if obj == cam:
+            if obj == active:
                 continue
                 
-            if cam.checkCollision(obj):
-                cam.isColliding = True
-                cam.handleCollision()
+            if active.checkCollision(obj):
+                active.isColliding = True
+                active.handleCollision(obj)
+                
+               
+
                 break 
+            
