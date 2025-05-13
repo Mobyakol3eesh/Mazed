@@ -1,9 +1,16 @@
+assimp_py==1.1.0
 -e .
 multipledispatch==1.0.0
+networkx==3.4.2
 numpy==2.2.4
 pillow==11.2.1
+pyassimp==5.2.5
 pygame==2.6.1
+pyglet==1.5.31
 pyglm==2.8.2
 PyOpenGL==3.1.9
 PyOpenGL-accelerate==3.1.9
 pyrr==0.10.3
+scipy==1.15.2
+setuptools==80.0.0
+trimesh==4.6.8
