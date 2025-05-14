@@ -33,7 +33,7 @@ source venv/bin/activate
 On Windows:
 ```bash
 python -m venv env
-venv\Scripts\activate
+env\Scripts\activate
 ```
 ### 3.Installing Dependencies
 With the virtual environment activated, install all required dependencies by running:
