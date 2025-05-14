@@ -21,8 +21,8 @@ This is a **minimal game engine prototype** built using **PyOpenGL** and **Pygam
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/minimal-game-engine.git
-cd minimal-game-engine
+git clone https://github.com/Mobyakol3eesh/Mazed.git
+cd Mazed
 ```
 ### 2. Create and Activate a Virtual Environment
 On macOS/Linux:
