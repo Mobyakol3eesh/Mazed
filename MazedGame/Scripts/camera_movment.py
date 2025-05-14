@@ -33,7 +33,7 @@ class cameraMovement(MScript):
         if (moveVector.x != 0 and moveVector.z != 0): 
             moveVector = glm.normalize(moveVector)
        
-        speed = 500.0
+        speed = 200.0
         forward = transform.forward
         transform.forward = glm.vec3(forward.x, 0, forward.z)
         
