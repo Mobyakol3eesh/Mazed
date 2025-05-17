@@ -27,8 +27,8 @@ cd Mazed
 ### 2. Create and Activate a Virtual Environment
 On macOS/Linux:
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv env
+source env/bin/activate
 ```
 On Windows:
 ```bash
